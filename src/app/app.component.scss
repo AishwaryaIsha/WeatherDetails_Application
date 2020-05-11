@@ -1,0 +1,19 @@
+.row.content {height: 1500px}
+    hr {
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid rgb(15, 14, 14);
+        margin: 1em 0;
+        padding: 0;
+    }
+
+    #cityname {
+      border: 1px solid rgb(0, 123, 255);
+      color:black;
+    }
+
+    .fixed-bottom{
+      bottom: 20px;
+      left:20px;
+    }

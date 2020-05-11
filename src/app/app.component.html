@@ -1,0 +1,97 @@
+
+<div class="row" style="margin:20px 5px;">
+  <div class="col-sm-3" style="border-right: 1px solid #333;">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Type City Name" [(ngModel)]="query" id="listSearch">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" (click)="AddCity()">
+          <span class="glyphicon glyphicon-search">+</span>
+        </button>
+      </span>
+    </div>
+    <div *ngIf="checkData == false">
+      <p>Not a valid location...</p>
+    </div>
+    <hr />
+     <p style="color:rgb(128,128,128)">Recent Locations:</p>
+     <hr style="height: 0px;border: 0;border-top: 1px solid rgb(240, 240, 240);margin:0"/>
+    <div class="btn-group btn-group-justified btn-block" *ngFor="let city of validCityList;let idx=index">
+      <a href="#" id="cityname" class="btn btn-default btn-block" (click)="AddNewCity(idx,city?.id)">{{city?.name}} - {{city?.main?.temp_min|TempConvert:273}}C {{city?.weather[0]?.main}}</a>
+      <a href="#" class="btn btn-primary" (click)="RefreshCurrent(idx,city?.name)">Refresh</a>
+      <a href="#" class="btn btn-primary" (click)="DeleteCity(city)">X</a>
+    </div>
+    <button class="btn btn-default fixed-bottom" (click)="ClearCity()" [disabled]="checkData != true">Clear</button>
+  </div>
+
+
+  <div class="col-sm-8">
+
+    <div class="row">
+
+      <div class="col-sm-6">
+        <H4>{{validNewCity?.name}}</H4>
+        <H4>Weather Details</H4>
+        <div *ngIf="cloudDetails == true && validNewCity?.weather[0]?.main ==='Clouds'">
+          <img src="assets/cloudy.svg" style="width:300px;height:300px">
+        </div>
+        <div *ngIf="cloudDetails == true && validNewCity.weather[0].main ==='Clear'">
+          <img src="assets/day.svg" style="width:300px;height:300px">
+        </div>
+        <div *ngIf="cloudDetails == true && validNewCity.weather[0].main ==='Rain'">
+          <img src="assets/rainy-7.svg" style="width:300px;height:300px">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div *ngIf="cloudDetails == true" style="margin-top: 100px;">
+          <table class="table table-condensed">
+            <tbody>
+              <tr>
+                <td>{{validNewCity?.main?.temp_min|TempConvert:273}} C</td>
+              </tr>
+              <tr>
+                <td>{{validNewCity?.weather[0]?.main}}</td>
+              </tr>
+              <tr>
+                <td>Wind:</td>
+                <td>{{validNewCity?.wind?.speed}} ms</td>
+                <td>{{validNewCity?.wind?.deg}} deg</td>
+              </tr>
+              <tr>
+                <td>Pressure:</td>
+                <td>{{validNewCity?.main?.pressure}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container">
+      <div *ngIf="cloudDetails == true">
+        <div class="row text-right">
+          <div *ngFor="let y of newWeatherDetails.list;let i=index">
+            <div class="col-sm" style="width:100px;height:100px">
+              <div class="row text-right">{{newWeatherDetails?.list[i]?.dt|epochToDate|date:"EEE d"}}</div>
+              <div class="row float-left" *ngIf="newWeatherDetails?.list[i]?.weather[0]?.main ==='Clouds'">
+                <img src="assets/cloudy.svg" style="width:100px;height:100px;float:left">
+              </div>
+              <div class="row float-left" *ngIf="newWeatherDetails?.list[i]?.weather[0]?.main ==='Clear'">
+                <img src="assets/day.svg" style="width:100px;height:100px;float:left">
+              </div>
+              <div class="row float-left" *ngIf="newWeatherDetails?.list[i]?.weather[0]?.main ==='Rain'">
+                <img src="assets/rainy-7.svg" style="width:100px;height:100px;float:left">
+              </div>
+              <div class="row text-right">
+                <p class="text-right">{{newWeatherDetails?.list[i]?.temp?.day|TempConvert:273}} C</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-sm-1">
+    <button class="btn" (click)="RefreshCity()" [disabled]="cloudDetails != true"><span aria-hidden="true" class="fa fa-refresh fa-spin">Refresh</span></button>
+  </div>
+</div>
